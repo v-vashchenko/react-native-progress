@@ -63,7 +63,7 @@ export class ProgressCircle extends Component {
     this.progressValue = 0;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.animated) {
       this.props.progress.addListener(event => {
         this.progressValue = event.value;
@@ -127,9 +127,9 @@ export class ProgressCircle extends Component {
                 rotate:
                   indeterminate && rotation
                     ? rotation.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: ['0deg', '360deg'],
-                      })
+                      inputRange: [0, 1],
+                      outputRange: ['0deg', '360deg'],
+                    })
                     : '0deg',
               },
             ],
@@ -147,8 +147,8 @@ export class ProgressCircle extends Component {
               strokeWidth={thickness}
             />
           ) : (
-            false
-          )}
+              false
+            )}
           {!indeterminate ? (
             <Shape
               fill={fill}
@@ -162,20 +162,37 @@ export class ProgressCircle extends Component {
               strokeWidth={thickness}
             />
           ) : (
-            false
-          )}
-          {border ? (
-            <Arc
-              radius={size / 2}
-              startAngle={0}
-              endAngle={(indeterminate ? endAngle * 2 : 2) * Math.PI}
-              stroke={borderColor || color}
-              strokeCap={strokeCap}
-              strokeWidth={border}
-            />
-          ) : (
-            false
-          )}
+              false
+            )}
+          {
+            border ? (
+              <Arc
+                radius={(size / 2) - (thickness / 4)}
+                stroke={borderColor || color}
+                strokeCap={strokeCap}
+                strokeWidth={border}
+                startAngle={CIRCLE}
+                endAngle={CIRCLE - angle}
+                offset={{ top: (thickness / 4), left: (thickness / 4) }}
+              />
+            ) : (
+                false
+              )}
+          {
+            border ? (
+              <Arc
+                radius={(size / 2)}
+                startAngle={0}
+                endAngle={(indeterminate ? endAngle * 2 : 2) * Math.PI}
+                stroke={fill}
+                strokeCap={strokeCap}
+                strokeWidth={border}
+                startAngle={CIRCLE}
+                endAngle={CIRCLE - angle}
+              />
+            ) : (
+                false
+              )}
         </Surface>
         {!indeterminate && showsText ? (
           <View
@@ -205,8 +222,8 @@ export class ProgressCircle extends Component {
             </Text>
           </View>
         ) : (
-          false
-        )}
+            false
+          )}
         {children}
       </View>
     );
