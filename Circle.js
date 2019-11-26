@@ -4,6 +4,7 @@ import { Animated, ART, StyleSheet, Text, View } from 'react-native';
 
 import Arc from './Shapes/Arc';
 import withAnimation from './withAnimation';
+import a from '../../src/api/fetch';
 
 const CIRCLE = Math.PI * 2;
 
@@ -63,7 +64,7 @@ export class ProgressCircle extends Component {
     this.progressValue = 0;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.animated) {
       this.props.progress.addListener(event => {
         this.progressValue = event.value;
@@ -116,12 +117,7 @@ export class ProgressCircle extends Component {
       ? Animated.multiply(progress, CIRCLE)
       : progress * CIRCLE;
 
-
-    const endArcAngle = (CIRCLE * progress._value);
-
-    const safeArcEndAngle = (typeof endArcAngle === 'number' && endArcAngle !== 0)
-      ? CIRCLE - endArcAngle
-      : 0;
+    console.log('@@@angle', angle);
 
     return (
       <View style={[styles.container, style]} {...restProps}>
@@ -173,13 +169,13 @@ export class ProgressCircle extends Component {
               false
             )}
           {
-            safeArcEndAngle ? (
+            border ? (
               <>
-                <Arc
+                <AnimatedArc
                   radius={(size / 2) - (thickness / 4)}
-                  startAngle={0}
-                  endAngle={safeArcEndAngle}
-                  stroke={borderColor || color}
+                  startAngle={CIRCLE}
+                  endAngle={angle}
+                  stroke='#abb7fc'
                   strokeCap={strokeCap}
                   strokeWidth={border}
                   offset={{ top: (thickness / 4), left: (thickness / 4) }}
