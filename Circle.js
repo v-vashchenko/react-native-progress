@@ -178,6 +178,14 @@ export class ProgressCircle extends Component {
                   strokeWidth={border}
                   offset={{ top: (thickness / 4), left: (thickness / 4) }}
                 />
+                <Arc
+                  radius={(size / 2)}
+                  startAngle={0}
+                  endAngle={CIRCLE}
+                  stroke={fill}
+                  strokeCap={strokeCap}
+                  strokeWidth={border}
+                />
               </>
             ) : (
                 false
