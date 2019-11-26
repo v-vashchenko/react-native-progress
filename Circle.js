@@ -63,7 +63,7 @@ export class ProgressCircle extends Component {
     this.progressValue = 0;
   }
 
-  componentDidMount() {
+  componentWillMount() {
     if (this.props.animated) {
       this.props.progress.addListener(event => {
         this.progressValue = event.value;
@@ -116,6 +116,13 @@ export class ProgressCircle extends Component {
       ? Animated.multiply(progress, CIRCLE)
       : progress * CIRCLE;
 
+
+    const endArcAngle = (CIRCLE * progress._value);
+
+    const safeArcEndAngle = (typeof endArcAngle === 'number' && endArcAngle !== 0)
+      ? CIRCLE - endArcAngle
+      : 0;
+
     return (
       <View style={[styles.container, style]} {...restProps}>
         <Surface
@@ -135,20 +142,21 @@ export class ProgressCircle extends Component {
             ],
           }}
         >
-          {unfilledColor && progressValue !== 1 ? (
-            <Shape
-              fill={fill}
-              radius={radius}
-              offset={offset}
-              startAngle={angle}
-              endAngle={CIRCLE}
-              direction={direction}
-              stroke={unfilledColor}
-              strokeWidth={thickness}
-            />
-          ) : (
-              false
-            )}
+          {
+            unfilledColor && progressValue !== 1 ? (
+              <Shape
+                fill={fill}
+                radius={radius}
+                offset={offset}
+                startAngle={angle}
+                endAngle={CIRCLE}
+                direction={direction}
+                stroke={unfilledColor}
+                strokeWidth={thickness}
+              />
+            ) : (
+                false
+              )}
           {!indeterminate ? (
             <Shape
               fill={fill}
@@ -165,34 +173,22 @@ export class ProgressCircle extends Component {
               false
             )}
           {
-            border ? (
-              <Arc
-                radius={(size / 2) - (thickness / 4)}
-                stroke={borderColor || color}
-                strokeCap={strokeCap}
-                strokeWidth={border}
-                startAngle={CIRCLE}
-                endAngle={CIRCLE - angle}
-                offset={{ top: (thickness / 4), left: (thickness / 4) }}
-              />
+            safeArcEndAngle ? (
+              <>
+                <Arc
+                  radius={(size / 2) - (thickness / 4)}
+                  startAngle={0}
+                  endAngle={safeArcEndAngle}
+                  stroke={borderColor || color}
+                  strokeCap={strokeCap}
+                  strokeWidth={border}
+                  offset={{ top: (thickness / 4), left: (thickness / 4) }}
+                />
+              </>
             ) : (
                 false
-              )}
-          {
-            border ? (
-              <Arc
-                radius={(size / 2)}
-                startAngle={0}
-                endAngle={(indeterminate ? endAngle * 2 : 2) * Math.PI}
-                stroke={fill}
-                strokeCap={strokeCap}
-                strokeWidth={border}
-                startAngle={CIRCLE}
-                endAngle={CIRCLE - angle}
-              />
-            ) : (
-                false
-              )}
+              )
+          }
         </Surface>
         {!indeterminate && showsText ? (
           <View
