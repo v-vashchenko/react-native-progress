@@ -116,10 +116,7 @@ export class ProgressCircle extends Component {
     const angle = animated
       ? Animated.multiply(progress, CIRCLE)
       : progress * CIRCLE;
-
-    console.log('@@@angle', angle);
-    Animated.di
-
+    
     return (
       <View style={[styles.container, style]} {...restProps}>
         <Surface
