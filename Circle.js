@@ -116,7 +116,7 @@ export class ProgressCircle extends Component {
     const angle = animated
       ? Animated.multiply(progress, CIRCLE)
       : progress * CIRCLE;
-    
+
     return (
       <View style={[styles.container, style]} {...restProps}>
         <Surface
@@ -169,13 +169,13 @@ export class ProgressCircle extends Component {
           {
             border ? (
               <AnimatedArc
-                radius={(size / 2) - (thickness / 4)}
+                radius={(size / 2) - (thickness / 2.5)}
                 startAngle={0}
                 endAngle={Animated.subtract(CIRCLE, angle)}
                 stroke='#abb7fc'
                 strokeCap={strokeCap}
                 strokeWidth={border}
-                offset={{ top: (thickness / 4), left: (thickness / 4) }}
+                offset={{ top: (thickness / 2.5), left: (thickness / 2.5) }}
               />
             ) : (
                 false
