@@ -169,13 +169,13 @@ export class ProgressCircle extends Component {
           {
             border ? (
               <AnimatedArc
-                radius={(size / 2) - (thickness / 2.5)}
+                radius={(size / 2) - (thickness / 2)}
                 startAngle={0}
                 endAngle={Animated.subtract(CIRCLE, angle)}
                 stroke='#abb7fc'
                 strokeCap={strokeCap}
                 strokeWidth={border}
-                offset={{ top: (thickness / 2.5), left: (thickness / 2.5) }}
+                offset={{ top: (thickness / 2), left: (thickness / 2) }}
               />
             ) : (
                 false
